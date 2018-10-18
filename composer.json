@@ -1,0 +1,27 @@
+{
+    "name": "blackquadrant/iauditor-api-wrapper-php",
+    "description": "Safety Culture's iAuditor API Wrapper for PHP",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.4",
+        "hiqdev/composer-config-plugin": "^0.2.5",
+        "adbario/php-dot-notation": "^2.1"
+    },
+    "authors": [
+        {
+            "name": "Black Quadrant",
+            "email": "dev@blackquadrant.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"BlackQuadrant\\IAuditor\\": "src/"}
+    },
+    "extra": {
+        "config-plugin": {
+            "api": "src/config/api.php"
+        }
+    }
+}
