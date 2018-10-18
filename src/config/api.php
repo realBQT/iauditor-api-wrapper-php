@@ -18,7 +18,7 @@ return [
         ],
         'settings'  =>  [
             'order'     =>  'desc',
-            'limit'     =>  100
+            'limit'     =>  1000
         ]
     ],
     'settings'  =>  [

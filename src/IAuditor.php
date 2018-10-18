@@ -60,24 +60,13 @@ class IAuditor{
         list($method,$endpoint,$payload)    =   $this->request_builder($resource,$action,$filter);
         $response   =   [];
         if($action==='list'){
-            $page       =   1;
-            $continue   =   false;
-            do{
-                //  Set Page
-                $payload['query']['page']   =   $page;
-                $data       =   $this->call_api($method,$endpoint,$payload);
-                $continue   =   filter_var($data->getHeaders()['X-Pagination-Has-More'][0], FILTER_VALIDATE_BOOLEAN);
-                $records    =   json_decode($data->getBody()->getContents(),1);
-                //  Incrementing Page                
-                if($continue){
-                    $page++;
-                }
-                // Storing response
-                foreach($records[$this->config['resources'][$resource[0]]['plural']] as $key=>$record){
-                    $response[]     =   $record;               
-                }
-    
-            }while($continue);
+            //  Set Page
+            $data       =   $this->call_api($method,$endpoint,$payload);
+            $records    =   json_decode($data->getBody()->getContents(),1);
+            // Storing response
+            foreach($records[$this->config['resources'][$resource[0]]['plural']] as $key=>$record){
+                $response[]     =   $record;               
+            }
         }
         else if($action==='show'){
             $config     =   $this->config['resources'][$resource[0]]['show'];   
@@ -105,13 +94,9 @@ class IAuditor{
         // Method
         $response[0]    =   strtoupper($config['method']);
         // Endpoint
-        $response[1]    =   $config['endpoint'];            
+        $response[1]    =   $config['endpoint'];  
         foreach($resource as $key=>$value){
-            if(strpos($response[1],'{')!==false){     
-                //    Converting resource to plural
-                if(!is_numeric($value)){
-                    $value      =   $this->config['resources'][$value]['plural'];
-                }
+            if(strpos($response[1],'{')!==false){    
                 $key            =   '{'.$key.'}';
                 if(strpos($response[1],$key)!==false){
                     $response[1]    =   str_replace($key,$value,$response[1]);

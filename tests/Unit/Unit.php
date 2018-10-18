@@ -61,7 +61,7 @@ class Unit extends TestCase
                     [
                         'query' =>  [
                             'order'     =>  'desc',
-                            'limit'     =>  100
+                            'limit'     =>  1000
                         ]
                     ]
                 ]
@@ -80,54 +80,27 @@ class Unit extends TestCase
         else{
             $response   =   $this->class->call($resource,$filter);
         }
+        if(strpos($resource,':')!==false){    
+            $response   =   [$response];
+        }
         $this->assertTrue($this->check_success($response,$success));
     }
     public function call_data(){
         return [
+            // [
+            //     'resource'  =>  'audit',
+            //     'filter'    =>  [],
+            //     'success'   =>  [
+            //         'audit_id' => '__EXISTS__'
+            //     ]
+            // ],
             [
-                'resource'  =>  'opportunity',
-                'filter'    =>  [
-                    'filter'    =>  [
-                        'conditions'    =>  [
-                            [
-                                'field'     =>  'milestone',
-                                'operator'  =>  'is',
-                                'value'     =>  'Won'
-                            ]
-                        ]
-                    ]
-                ],
-                'success'   =>  [
-                    'milestone.name' => 'Won'
-                ]
-            ],
-            [
-                'resource'  =>  'opportunity',
-                'filter'    =>  [],
-                'success'   =>  []
-            ],
-            [
-                'resource'  =>  'opportunity:7111052',
+                'resource'  =>  'audit:audit_a291a59f902b4bca98e780d3a6a1055d',
                 'filter'    =>  [],
                 'success'   =>  [
-                    'id'        =>  '7111052',
-                    'value.currency'    =>  'NZD'
+                    'audit_data.score'    =>  '__EXISTS__'
                 ]
-            ],
-            [
-                'resource'  =>  'track:opportunity:7111052',
-                'filter'    =>  [],
-                'success'   =>  [
-                    'direction' =>  'START_DATE'
-                ]
-            ],
-            [
-                'resource'  =>  'entry:opportunity:7111052',
-                'filter'    =>  [],
-                'success'   =>  [
-                    'entryAt' =>  '__EXISTS__'
-                ]
-            ]            
+            ]           
         ];
     }
     
@@ -137,7 +110,7 @@ class Unit extends TestCase
             foreach($success as $key=>$value){
                 if(strpos($value,'__')!==false){
                     if($value==='__EXISTS__'){
-                        if(!in_array($key, $record)){
+                        if(!$record->has($key)){
                             return false;
                         }
                     }
