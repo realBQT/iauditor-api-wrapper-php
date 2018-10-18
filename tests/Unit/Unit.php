@@ -87,13 +87,13 @@ class Unit extends TestCase
     }
     public function call_data(){
         return [
-            // [
-            //     'resource'  =>  'audit',
-            //     'filter'    =>  [],
-            //     'success'   =>  [
-            //         'audit_id' => '__EXISTS__'
-            //     ]
-            // ],
+            [
+                'resource'  =>  'audit',
+                'filter'    =>  [],
+                'success'   =>  [
+                    'audit_id' => '__EXISTS__'
+                ]
+            ],
             [
                 'resource'  =>  'audit:audit_a291a59f902b4bca98e780d3a6a1055d',
                 'filter'    =>  [],
